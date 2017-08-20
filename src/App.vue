@@ -1,14 +1,19 @@
 <template>
   <div id="app" class="app"  v-bind:style="size">
-    <div v-bind:class="rectStyle">
+    <div class="rect" v-bind:class="{drop: drop}">
       <decorate></decorate>
       <div class="screen">
         <div class="panel">
-          <matrix></matrix>
+          <matrix
+            v-bind:matrix="matrix"
+            v-bind:cur="cur"
+            v-bind:reset="keyboard.reset"
+          ></matrix>
+          <logo v-bind:cur="!!cur" v-bind:reset="reset"></logo>
           <div class="state">
             <Point></Point>
             <p>Start Line</p>
-            <number v-bind:number="0"></number>
+            <number v-bind:number="state2"></number>
             <p>Level</p>
             <number v-bind:number="1" v-bind:length="1"></number>
             <p>Next</p>
@@ -28,16 +33,15 @@
   import Point from '@/components/Point';
   import Number from '@/components/Number';
   import Next from '@/components/Next';
+  import Logo from '@/components/Logo.vue';
   import Keyboard from '@/components/Keyboard';
-  import {blockShape} from '@/const';
-
-
-  const blockType = Object.keys(blockShape);
-
-  function getNextType() { // 随机获取下一个方块类型
-    const len = blockType.length;
-    return blockType[Math.floor(Math.random() * len)];
-  }
+  import states from '@/controllers/states';
+  import { mapState } from 'vuex';
+  import {blockShape, blockType, } from '@/consts/matrix';
+  import { getNextType } from '@/utils/matrix';
+  import {visibilityChangeEvent, isFocus} from '@/utils';
+  import {lastRecord} from '@/utils/storage';
+  import {speeds} from '@/consts';
 
   export default {
     name: 'app',
@@ -45,14 +49,52 @@
       return {
         w: document.documentElement.clientWidth,
         h: document.documentElement.clientHeight,
-        rectStyle: {
-          rect: true,
-          drop: false
-        },
         nextType: getNextType()
       }
     },
+    mounted: function () {
+      if (visibilityChangeEvent) {
+        document.addEventListener(visibilityChangeEvent, () => {
+          states.focus(isFocus());
+        }, false);
+      }
+
+      if (lastRecord) {
+        if (lastRecord.cur && !lastRecord.pause) {
+          const speedRun = this.props.speedRun;
+          let timeout = speedRun < speeds[speeds.length - 1] ? speeds[speeds.length - 1] : speedRun;
+          states.auto(timeout);
+        }
+        if (!lastRecord.cur) {
+          states.overStart();
+        }
+      } else {
+        states.overStart();
+      }
+    },
     computed: {
+      ...mapState([
+        'pause',
+        'music',
+        'matrix',
+        'next',
+        'cur',
+        'speedStart',
+        'speedRun',
+        'startLines',
+        'clearLines',
+        'points',
+        'max',
+        'keyboard.reset',
+        'drop',
+        'keyboard',
+        'reset'
+      ]),
+
+      state2() {
+        return this.cur ? this.clearLines : this.startLines;
+      },
+
       filling() {
         const w = this.w;
         const h = this.h;
@@ -95,7 +137,8 @@
       Point,
       Number,
       Next,
-      Keyboard
+      Keyboard,
+      Logo
     }
   }
 </script>

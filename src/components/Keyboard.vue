@@ -9,6 +9,7 @@
       arrow="translate(0, 63px)"
       v-bind:position="true"
       v-bind:active="false"
+      ref="dom_up"
     ></btn>
     <btn
       color="blue"
@@ -18,6 +19,7 @@
       label="Down"
       arrow="translate(0,-71px) rotate(180deg)"
       v-bind:active="false"
+      ref="dom_down"
     ></btn>
     <btn
       color="blue"
@@ -27,6 +29,7 @@
       label="Left"
       arrow="translate(60px, -12px) rotate(270deg)"
       v-bind:active="false"
+      ref="dom_left"
     ></btn>
     <btn
       color="blue"
@@ -36,6 +39,7 @@
       label="Right"
       arrow="translate(-60px, -12px) rotate(90deg)"
       v-bind:active="false"
+      ref="dom_right"
     ></btn>
     <btn
       color="blue"
@@ -44,6 +48,7 @@
       v-bind:left="52"
       label="Drop (SPACE)"
       v-bind:active="false"
+      ref="dom_space"
     ></btn>
     <btn
       color="red"
@@ -52,6 +57,7 @@
       v-bind:left="196"
       label="Reset(R)"
       v-bind:active="false"
+      ref="dom_r"
     ></btn>
     <btn
       color="green"
@@ -60,6 +66,7 @@
       v-bind:left="106"
       label="Sound(S)"
       v-bind:active="false"
+      ref="dom_s"
     ></btn>
     <btn
       color="green"
@@ -68,19 +75,75 @@
       v-bind:left="16"
       label="Pause(P)"
       v-bind:active="false"
+      ref="dom_p"
     ></btn>
   </div>
 </template>
 
 <script>
   import Btn from '@/components/ui/Btn';
+  import { mapState } from 'vuex';
+  import commands from '@/controllers/commands';
+  import store from '@/store';
+
   export default {
     name: 'keyboard',
+    mounted: function () {
+      const touchEventCatch = {};
+
+      const mouseDownEventCatch = {};
+      document.addEventListener('touchstart', (e) => {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+      }, true);
+
+      document.addEventListener('mousedown', (e) => {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+      }, true);
+
+      Object.keys(commands).forEach((key) => {
+        this.$refs[`dom_${key}`].$el.addEventListener('mousedown', () => {
+          if (touchEventCatch[key] === true) {
+            return;
+          }
+          commands[key].down(store);
+          mouseDownEventCatch[key] = true;
+        }, true);
+        this.$refs[`dom_${key}`].$el.addEventListener('mouseup', () => {
+          if (touchEventCatch[key] === true) {
+            touchEventCatch[key] = false;
+            return;
+          }
+          commands[key].up(store);
+          mouseDownEventCatch[key] = false;
+        }, true);
+        this.$refs[`dom_${key}`].$el.addEventListener('mouseout', () => {
+          if (mouseDownEventCatch[key] === true) {
+            commands[key].up(store);
+          }
+        }, true);
+        this.$refs[`dom_${key}`].$el.addEventListener('touchstart', () => {
+          touchEventCatch[key] = true;
+          commands[key].down(store);
+        }, true);
+        this.$refs[`dom_${key}`].$el.addEventListener('touchend', () => {
+          commands[key].up(store);
+        }, true);
+      });
+    },
     props: {
       filling: {
         type: Number,
         required: true
       }
+    },
+    computed: {
+      ...mapState([
+        'matrix',
+      ]),
     },
     components: {
       Btn
