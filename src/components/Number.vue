@@ -1,10 +1,19 @@
 <template>
-  <div class="number">
-    <span v-for="(e, k) in getNumber" class="bg" v-bind:class="getClass(e)"></span>
+  <div v-if="isTime" class="number">
+    <span v-for="(e, k) in getTime" class="bg" :class="getClass(e)"></span>
+  </div>
+  <div v-else class="number">
+    <span v-for="(e, k) in getNumber" class="bg" :class="getClass(e)"></span>
   </div>
 </template>
 
 <script>
+  const formate = (num) => (
+    num < 10 ? `0${num}`.split('') : `${num}`.split('')
+  );
+
+  let timeInterval;
+
   export default {
     name: 'number',
     props: {
@@ -14,6 +23,9 @@
       length: {
         type: Number,
         default: 6
+      },
+      isTime: {
+        type: Boolean
       }
     },
     data() {
@@ -29,13 +41,41 @@
           num.unshift('n');
         }
         return num;
+      },
+      getTime() {
+        const now = this.time;
+        const hour = formate(now.getHours());
+        const min = formate(now.getMinutes());
+        const sec = now.getSeconds() % 2;
+        const t = hour.concat(sec ? 'd' : 'd_c', min);
+        return t;
       }
     },
     methods: {
       getClass(e) {
         return `s_${e}`;
       }
-    }
+    },
+    beforeMount: function() {
+      if (!this.isTime) {
+        return;
+      }
+      const clock = () => {
+        const count = +timeInterval;
+        timeInterval = setTimeout(() => {
+          this.time =  new Date();
+          this.time_count = count;
+          clock();
+        }, 1000);
+      };
+      clock();
+    },
+    beforeDestroy: function() {
+      if (!this.isTime) {
+        return;
+      }
+      clearTimeout(timeInterval);
+    },
   }
 </script>
 

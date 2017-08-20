@@ -1,28 +1,29 @@
 <template>
-  <div id="app" class="app"  v-bind:style="size">
-    <div class="rect" v-bind:class="{drop: drop}">
+  <div id="app" class="app"  :style="size">
+    <div class="rect" :class="{drop: drop}">
       <decorate></decorate>
       <div class="screen">
         <div class="panel">
-          <matrix
-            v-bind:matrix="matrix"
-            v-bind:cur="cur"
-            v-bind:reset="keyboard.reset"
-          ></matrix>
-          <logo v-bind:cur="!!cur" v-bind:reset="reset"></logo>
+          <matrix :matrix="matrix" :cur="cur" :reset="keyboard.reset"></matrix>
+          <logo :cur="!!cur" :reset="reset"></logo>
           <div class="state">
             <Point></Point>
             <p>Start Line</p>
-            <number v-bind:number="state2"></number>
+            <number :number="state2"></number>
             <p>Level</p>
-            <number v-bind:number="1" v-bind:length="1"></number>
+            <number :number="1" :length="1"></number>
             <p>Next</p>
-            <next v-bind:data="nextType"></next>
+            <next :data="nextType"></next>
+            <div class="bottom">
+              <!--<Music data={this.props.music} />-->
+              <!--<Pause data={this.props.pause} />-->
+              <number isTime></number>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <keyboard v-bind:filling="filling"></keyboard>
+    <keyboard :filling="filling"></keyboard>
   </div>
 </template>
 
