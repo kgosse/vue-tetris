@@ -15,8 +15,8 @@
             <p>Next</p>
             <next :data="nextType"></next>
             <div class="bottom">
-              <!--<Music data={this.props.music} />-->
-              <!--<Pause data={this.props.pause} />-->
+              <music :data="music"></music>
+              <Pause :data="pause"></Pause>
               <number isTime></number>
             </div>
           </div>
@@ -35,6 +35,8 @@
   import Number from '@/components/Number';
   import Next from '@/components/Next';
   import Logo from '@/components/Logo.vue';
+  import Music from '@/components/Music.vue';
+  import Pause from '@/components/Pause.vue';
   import Keyboard from '@/components/Keyboard';
   import states from '@/controllers/states';
   import { mapState } from 'vuex';
@@ -139,7 +141,9 @@
       Number,
       Next,
       Keyboard,
-      Logo
+      Logo,
+      Music,
+      Pause
     }
   }
 </script>
