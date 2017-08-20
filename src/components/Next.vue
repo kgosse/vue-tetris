@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import {blockShape} from '@/const';
+  import {blockShape} from '@/consts/matrix';
 
   const xy = { // 方块在下一个中的坐标
     I: [1, 0],

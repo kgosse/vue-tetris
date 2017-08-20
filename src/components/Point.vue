@@ -7,6 +7,7 @@
 
 <script>
   import Number from '@/components/Number';
+  import { mapState } from 'vuex';
 
   export default {
     name: 'point',
@@ -15,6 +16,13 @@
         label: 'MAX',
         number: 0,
       }
+    },
+    computed: {
+      ...mapState({
+        cur: 'cur',
+        max: 'max',
+        point: 'points'
+      }),
     },
     components: {
       Number

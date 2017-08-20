@@ -1,0 +1,15 @@
+export const LOCK = 'LOCK';
+export const RESET = 'RESET';
+export const PAUSE = 'PAUSE';
+export const MUSIC = 'MUSIC';
+export const MATRIX = 'MATRIX';
+export const NEXT_BLOCK = 'NEXT_BLOCK';
+export const START_LINES = 'START_LINES';
+export const MAX = 'MAX';
+export const POINTS = 'POINTS';
+export const SPEED_START = 'SPEED_START';
+export const SPEED_RUN = 'SPEED_RUN';
+export const CLEAR_LINES = 'CLEAR_LINES';
+export const DROP = 'DROP';
+export const FOCUS = 'FOCUS';
+export const MOVE_BLOCK = 'MOVE_BLOCK';
