@@ -4,8 +4,12 @@ import Vue from 'vue';
 import App from './App';
 import store from './store';
 import {subscribeRecord} from './utils/storage';
+import {keyDown, keyUp} from './controllers/keyboard';
 
 // subscribeRecord(store);
+
+document.addEventListener('keydown', keyDown, true);
+document.addEventListener('keyup', keyUp, true);
 
 Vue.config.productionTip = false;
 
