@@ -8,8 +8,8 @@
           <logo :cur="!!cur" :reset="reset"></logo>
           <div class="state">
             <Point></Point>
-            <p>Start Line</p>
-            <number :number="state2"></number>
+            <p>{{stats2Text}}</p>
+            <number :number="stats2"></number>
             <p>Level</p>
             <number :number="1" :length="1"></number>
             <p>Next</p>
@@ -39,6 +39,7 @@
   import Pause from '@/components/Pause.vue';
   import Keyboard from '@/components/Keyboard';
   import states from '@/controllers/states';
+  import {i18n, lan} from '@/utils/i18n/index';
   import { mapState } from 'vuex';
   import {blockShape, blockType, } from '@/consts/matrix';
   import { getNextType } from '@/utils/matrix';
@@ -93,7 +94,11 @@
         'reset'
       ]),
 
-      state2() {
+      stats2Text() {
+        return this.cur ? i18n.cleans[lan] : i18n.startLine[lan];
+      },
+
+      stats2() {
         return this.cur ? this.clearLines : this.startLines;
       },
 
