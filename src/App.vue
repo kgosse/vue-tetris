@@ -13,7 +13,7 @@
             <p>Level</p>
             <number :number="1" :length="1"></number>
             <p>Next</p>
-            <next :data="nextType"></next>
+            <next :data="next"></next>
             <div class="bottom">
               <music :data="music"></music>
               <Pause :data="pause"></Pause>
@@ -52,7 +52,6 @@
       return {
         w: document.documentElement.clientWidth,
         h: document.documentElement.clientHeight,
-        nextType: getNextType()
       }
     },
     mounted: function () {
