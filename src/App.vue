@@ -7,7 +7,7 @@
           <matrix :matrix="matrix" :cur="cur" :reset="keyboard.reset"></matrix>
           <logo :cur="!!cur" :reset="reset"></logo>
           <div class="state">
-            <Point></Point>
+            <point :cur="!!cur" :score="points" :max="max"></point>
             <p>{{stats2Text}}</p>
             <number :number="stats2"></number>
             <p>Level</p>
@@ -56,6 +56,7 @@
       }
     },
     mounted: function () {
+
       if (visibilityChangeEvent) {
         document.addEventListener(visibilityChangeEvent, () => {
           states.focus(isFocus());

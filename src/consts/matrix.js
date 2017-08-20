@@ -42,6 +42,8 @@ export const origin = {
   T: [[0, 0], [1, 0], [-1, 1], [0, -1]],
 };
 
+export const fillLine = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
 export const blankLine = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 export const blankMatrix = (() => {

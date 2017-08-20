@@ -11,6 +11,7 @@
   import { List } from 'immutable';
   import { mapState } from 'vuex';
   import {isClear} from '@/utils/matrix';
+  import {blankLine, fillLine} from '@/consts/matrix';
   import states from '@/controllers/states';
 
   const t = setTimeout;
@@ -54,12 +55,14 @@
         handler: function (nextProps, props) {
           const clears = isClear(nextProps.matrix);
           const overs = nextProps.reset;
+          const preClearLines = this.clearLines;
+          const preIsOver = this.isOver;
           this.clearLines = clears;
           this.isOver = overs;
-          if (clears && !this.clearLines) {
+          if (clears && !preClearLines) {
             this.clearAnimate(clears);
           }
-          if (!clears && overs && !this.isOver) {
+          if (!clears && overs && !preIsOver) {
             this.over(nextProps);
           }
         },
@@ -147,9 +150,7 @@
             states.overEnd();
             return;
           }
-          this.setState({
-            overState,
-          });
+          this.overState = overState;
         };
 
         for (let i = 0; i <= 40; i++) {
