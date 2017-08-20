@@ -4,6 +4,7 @@ import down from './down';
 import up from './up';
 import space from './space';
 import r from './r';
+import p from './p';
 
 export default {
   left,
@@ -12,4 +13,5 @@ export default {
   right,
   space,
   r,
+  p
 };
